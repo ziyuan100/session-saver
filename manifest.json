@@ -1,0 +1,15 @@
+{
+    "name": "Session Saver",
+    "version": "1.0.0",
+    "description": "Saves the current Chrome session, to be loaded whenever it may be needed again",
+    "manifest_version": 3,
+    "author": "shsh",
+    "action": {
+        "default_popup": "index.html",
+        "default_title": "Session Saver"
+    },
+    "permissions": [
+        "tabs",
+        "storage"
+    ]
+}
