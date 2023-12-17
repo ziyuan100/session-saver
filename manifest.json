@@ -6,12 +6,12 @@
     "author": "shsh",
     "action": {
         "default_popup": "main.html",
-        "default_title": "Session Saver"
+        "default_title": "Session Saver",
+        "default_icon": "assets/save.png"
     },
     "permissions": [
         "tabs",
         "storage",
-        "windows",
-        "action"
+        "windows"
     ]
 }

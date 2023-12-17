@@ -7,7 +7,7 @@ saveBtn.addEventListener("click", saveSession);
 
 async function saveSession() {
     // TODO replace with uuid
-    const len = Object.keys(await chrome.storage.local.get()).reduce((x, ys) => ys + 1, 0)
+    const len = Object.keys(await chrome.storage.local.get()).length
     console.log(len);
     const title = document.querySelector("#title").value;   
     let tabs = await chrome.tabs.query({});
