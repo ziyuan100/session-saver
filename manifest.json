@@ -5,12 +5,13 @@
     "manifest_version": 3,
     "author": "shsh",
     "action": {
-        "default_popup": "index.html",
+        "default_popup": "main.html",
         "default_title": "Session Saver"
     },
     "permissions": [
         "tabs",
         "storage",
-        "windows"
+        "windows",
+        "action"
     ]
 }

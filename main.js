@@ -1,42 +1,34 @@
 const saveBtn = document.querySelector("#save");
 const reloadBtn = document.querySelector("#reload")
 const sessionsDiv = document.querySelector("#sessions");
-saveBtn.addEventListener("click", saveSession);
+saveBtn.addEventListener("click", () => {
+    window.location.href="save.html";
+}); 
 reloadBtn.addEventListener("click", getSessions);
 const clearBtn = document.querySelector("#clear");
 clearBtn.addEventListener("click", clearSessions);
 
 getSessions();
 
-async function saveSession() {
-    let tabs = await chrome.tabs.query({});
-    let urls = [];
-    for (tab of tabs) {
-        urls.push(tab.url);
-    }
-    const newId = sessionsDiv.childElementCount;
-    // TODO: Naming functionality for sessions
-    await chrome.storage.local.set({[newId]: urls});
-    getSessions();
-}
-
 async function getSessions() {
     sessionsDiv.replaceChildren();
     const res = await chrome.storage.local.get();
-    for (session in res) {
+    console.log(res);
+    for (id in res) {
+        const {name, urls} = res[id];
         const newDiv = document.createElement("div");
-        newDiv.setAttribute("id", session)
+        newDiv.setAttribute("id", id)
         const title = document.createElement("h2");
-        title.innerText = session;
+        title.innerText = name;
         newDiv.appendChild(title);
         const openBtn = document.createElement("button");
         openBtn.innerText = "Open";
-        openBtn.value = session;
+        openBtn.value = id;
         newDiv.appendChild(openBtn);
         const content = document.createElement("ul");
-        for (link of res[session]) {
+        for (url of urls) {
             const text = document.createElement("li");
-            text.innerText = link;
+            text.innerText = url;
             content.appendChild(text);
         }
         newDiv.appendChild(content);
@@ -47,10 +39,11 @@ async function getSessions() {
 }
 
 async function openSession(evt) {
+    console.log(evt.target);
     const id = evt.target.value;
     const res = (await chrome.storage.local.get(id))[0];
-    console.log(res);
-    chrome.windows.create({url: res});
+    const { urls } = res;
+    chrome.windows.create({url: urls, state: "maximized"});
 }
 
 async function clearSessions() {
