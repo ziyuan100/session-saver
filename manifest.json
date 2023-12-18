@@ -13,5 +13,8 @@
         "tabs",
         "storage",
         "windows"
-    ]
+    ],
+    "background": {
+        "service_worker": "background.js"
+    }
 }

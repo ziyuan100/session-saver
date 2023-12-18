@@ -2,7 +2,7 @@ const saveBtn = document.querySelector("#save");
 const reloadBtn = document.querySelector("#reload")
 const sessionsDiv = document.querySelector("#sessions");
 saveBtn.addEventListener("click", () => {
-    window.location.href="save.html";
+    window.location.href = "save.html";
 }); 
 reloadBtn.addEventListener("click", getSessions);
 const clearBtn = document.querySelector("#clear");
@@ -13,7 +13,6 @@ getSessions();
 async function getSessions() {
     sessionsDiv.replaceChildren();
     const res = await chrome.storage.local.get();
-    console.log(res);
     if (!Object.keys(res).length) {
         sessionsDiv.innerText = "Empty"
     } 
@@ -31,6 +30,11 @@ async function getSessions() {
         openBtn.value = id;
         openBtn.classList.add("btn", "btn-dark", "w-25", "d-inline", "mb-3")
         newDiv.appendChild(openBtn);
+        const editBtn = document.createElement("button");
+        editBtn.innerText = "Edit";
+        editBtn.value = id;
+        editBtn.classList.add("btn", "btn-dark", "w-25", "d-inline", "mb-3")
+        newDiv.appendChild(editBtn);
         const content = document.createElement("ul");
         for (url of urls) {
             const text = document.createElement("li");
@@ -41,13 +45,21 @@ async function getSessions() {
         sessionsDiv.appendChild(newDiv);
 
         openBtn.addEventListener("click", openSession);
+        // _id needs to be defined for eventlistener, since id called in eventlistener will take the final value of id(after finishing looping)
+        const _id = id;
+        editBtn.addEventListener("click", () => {
+            chrome.runtime.sendMessage({action: "edit-session", session: res[_id]}, res => {
+                if (res) {
+                    window.location.href = "edit.html";
+                }
+            });
+        })
     }
 }
 
 async function openSession(evt) {
     const id = evt.target.value;
     const res = (await chrome.storage.local.get(id))[id];
-    console.log(res);
     const { urls } = res;
     chrome.windows.create({url: urls, state: "maximized"});
 }
@@ -57,4 +69,4 @@ async function clearSessions() {
     getSessions();
 }
 
-// TODO: Create Edit functionality
+// TODO: bugfix -> saving currently saves all open tabs, not just on the active window
