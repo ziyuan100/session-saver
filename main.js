@@ -68,5 +68,3 @@ async function clearSessions() {
     await chrome.storage.local.clear();
     getSessions();
 }
-
-// TODO: bugfix -> saving currently saves all open tabs, not just on the active window

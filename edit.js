@@ -22,7 +22,7 @@ updateBtn.addEventListener("click", updateSession);
 async function updateSession() {
     // TODO replace with uuid
     const title = document.querySelector("#title").value;   
-    let tabs = await chrome.tabs.query({});
+    let tabs = await chrome.tabs.query({lastFocusedWindow: true});
     let urls = [];
     for (tab of tabs) {
         urls.push(tab.url);

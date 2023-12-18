@@ -8,8 +8,8 @@ saveBtn.addEventListener("click", saveSession);
 async function saveSession() {
     // TODO replace with uuid
     const len = Object.keys(await chrome.storage.local.get()).length
-    const title = document.querySelector("#title").value;   
-    let tabs = await chrome.tabs.query({});
+    const title = document.querySelector("#title").value;
+    let tabs = await chrome.tabs.query({lastFocusedWindow: true});
     let urls = [];
     for (tab of tabs) {
         urls.push(tab.url);
